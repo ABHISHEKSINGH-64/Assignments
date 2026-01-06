@@ -8,11 +8,11 @@
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<body class="bg-gradient-to-r from-purple-500 to-indigo-600 flex justify-center items-center min-h-screen">
 
-<div class="bg-white p-8 rounded-xl shadow-lg w-80">
+<div class="bg-white p-8 rounded-2xl shadow-2xl w-96">
 
-<h2 class="text-2xl font-bold text-center mb-6 text-gray-700">
+<h2 class="text-3xl font-bold text-center mb-6 text-gray-700">
 Login
 </h2>
 
@@ -23,7 +23,7 @@ Login
 type="email" 
 id="email" 
 placeholder="Enter your Email"
-class="w-full border p-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-purple-400"
+class="w-full border p-4 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-purple-400"
 >
 
 <!-- Password -->
@@ -32,94 +32,129 @@ class="w-full border p-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring
 type="password" 
 id="password" 
 placeholder="Enter your Password"
-class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-400"
+class="w-full border p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
 >
-<button type="button" onclick="togglePassword()" 
-class="absolute right-2 top-2 text-sm text-gray-500">
+
+<button 
+type="button" 
+onclick="togglePassword()" 
+class="absolute right-3 top-3 text-sm text-gray-500 hover:text-purple-600"
+id="toggleBtn"
+>
 Show
 </button>
 </div>
 
+<!-- Remember me -->
+<div class="flex justify-between items-center mb-4 text-sm">
+<label class="flex items-center gap-2">
+<input type="checkbox">
+Remember me
+</label>
+
+<a href="#" class="text-purple-600 hover:underline">
+Forgot Password?
+</a>
+</div>
+
+<!-- Button -->
 <button 
-class="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700 transition"
+type="submit"
+class="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition duration-300"
 >
 Login
 </button>
 
 </form>
 
-<p id="message" class="text-center mt-4 text-sm"></p>
+<p id="message" class="text-center mt-4 text-sm font-medium"></p>
+
+<!-- Register -->
+<p class="text-center text-sm mt-4 text-gray-600">
+Don't have account? 
+<a href="register.html" class="text-purple-600 font-semibold hover:underline">
+Register
+</a>
+</p>
 
 </div>
 
 <script>
 
-// Toggle password
+// Show / Hide Password
 function togglePassword(){
     let pass = document.getElementById("password");
-    pass.type = pass.type === "password" ? "text" : "password";
+    let btn = document.getElementById("toggleBtn");
+
+    if(pass.type === "password"){
+        pass.type = "text";
+        btn.innerText = "Hide";
+    }else{
+        pass.type = "password";
+        btn.innerText = "Show";
+    }
 }
 
-// Email validation
+// Email Validation
 function isValidEmail(email){
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-// Login
+// Message Helper
+function showMessage(text,color){
+    let msg = document.getElementById("message");
+    msg.innerText = text;
+    msg.style.color = color;
+}
+
+// Login Form
 document.getElementById("loginForm").addEventListener("submit", function(e){
+
     e.preventDefault();
 
-    let email = document.getElementById("email").value.trim();
+    let email = document.getElementById("email").value.trim().toLowerCase();
     let password = document.getElementById("password").value.trim();
-    let message = document.getElementById("message");
 
-    message.innerText = "";
+    showMessage("", "black");
 
     // Validation
-    if(!email || !password){
-        showMessage("⚠️ Please fill all fields", "orange");
+    if(email === "" || password === ""){
+        showMessage("⚠ Please fill all fields", "orange");
         return;
     }
 
     if(!isValidEmail(email)){
-        showMessage("⚠️ Invalid email format", "orange");
+        showMessage("⚠ Invalid Email Format", "orange");
         return;
     }
 
-    // Get users from localStorage
+    // Get Users
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Find user
-    let foundUser = users.find(user => 
-        user.email === email && user.password === password
+    // Find User
+    let foundUser = users.find(user =>
+        user.email.toLowerCase() === email &&
+        user.password === password
     );
 
     if(foundUser){
+
         showMessage("✅ Login Successful", "green");
 
-        // Save login session
+        // Save Session
         localStorage.setItem("loggedInUser", JSON.stringify(foundUser));
 
         // Redirect
         setTimeout(()=>{
             window.location.href = "dashboard.html";
-        }, 1200);
+        },1200);
 
-    } else {
+    }else{
         showMessage("❌ Invalid Email or Password", "red");
     }
+
 });
-
-// Message helper
-function showMessage(text, color){
-    let message = document.getElementById("message");
-    message.innerText = text;
-    message.style.color = color;
-}
-
 </script>
 
 </body>
 </html>
-```
-
