@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validated Registration Form</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="font-size: 40px;">SignUp</h2>
+        <form id="registrationForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Enter your username" name="name" required>
+
+            <label for="email">Email:</label>
+            <input placeholder=" Enter your Email" type="email" id="email"  name="email" required>
+
+            <label for="password">Password:</label>
+            <input  placeholder="Enter your password" type="password" id="password" name="password" required>
+
+            
+
+        <div class="sr-button">
+            <button type="submit" id="submit" onclick=submitForm()>submit</button>
+          
+       </div>
+        </form>
+
+        <div id="output">
+            <p id="message"></p>
+        </div>
+    </div>
+
+    <script>
+     function submitForm() {
+            let name = document.getElementById('name').value;
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('password').value;
+            let message= document.getElementById("message");
+
+            if (name === '' || email === '' || password === '' ) {
+                window.alert('⚠️ Error: Please fill in all fields (Name, Email, Password, and Description) before submitting.');
+            }
+
+            else {
+                message.textContent = `Name: ${name}  Email: ${email}  Password: ${password} `;
+            }
+          }
+    </script> 
+</body>
+</html>
