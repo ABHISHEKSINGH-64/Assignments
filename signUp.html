@@ -34,21 +34,29 @@
         </div>
     </div>
 
-    <script>
-     function submitForm() {
-            let name = document.getElementById('name').value;
-            let email = document.getElementById('email').value;
-            let password = document.getElementById('password').value;
-            let message= document.getElementById("message");
+    
+<script>
 
-            if (name === '' || email === '' || password === '' ) {
-                window.alert('⚠️ Error: Please fill in all fields (Name, Email, Password, and Description) before submitting.');
-            }
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
 
-            else {
-                message.textContent = `Name: ${name}  Email: ${email}  Password: ${password} `;
-            }
-          }
-    </script> 
+   let users = [{name:Abhi, email:"abhi@123.com", password:1234}]
+
+   function submitForm(){
+    for(i=0, i<user.length; i++)
+    if (users[i].email === email){
+        message.innerText="Already user exists"
+    }
+    return;
+    users.push({
+        name :name,
+        email: eamil,
+        password: password
+    });
+   }
+      
+</script>
+     
 </body>
 </html>
