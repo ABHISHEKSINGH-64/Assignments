@@ -1,39 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI, sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background: linear-gradient(120deg,#667eea,#764ba2);
+}
+
+.login-box{
+width:350px;
+padding:40px;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(10px);
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+text-align:center;
+color:white;
+}
+
+.login-box h2{
+margin-bottom:25px;
+font-weight:600;
+}
+
+.input-box{
+position:relative;
+margin-bottom:25px;
+}
+
+.input-box input{
+width:100%;
+padding:12px;
+border:none;
+outline:none;
+border-radius:8px;
+background:rgba(255,255,255,0.2);
+color:white;
+font-size:15px;
+}
+
+.input-box input::placeholder{
+color:#eee;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+background:#ff7eb3;
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+background:#ff4f9a;
+transform:scale(1.03);
+}
+
+</style>
 <body>
+    <input type="email" id="email" placeholder="Enter your Email">
+    <input type="password" id="password" placeholder="Enter your password">
 
-<input type="email" id="email" placeholder="Enter your Email">
-<input type="password" id="password" placeholder="Enter your password">
+    <button onclick="login()">Login</button>
 
-<button onclick="login()">Login</button>
-
-<p id="message"></p>
+    <p id="message"></p>
 
 <script>
 
-let users = [
- {email:"abhi123@gmail.com", password:"1234"}
-];
+     let users = [
+         {email:"abhi123@gmail.com", password:"1234"}
+       ];
 
-function login(){
+        function login(){
+ 
+       let email = document.getElementById("email").value;
+       let password = document.getElementById("password").value;
 
- let email = document.getElementById("email").value;
- let password = document.getElementById("password").value;
+    for (let i=0; i<users.length; i++){
 
- for (let i=0; i<users.length; i++){
+           if(users[i].email === email && users[i].password === password){
+           alert("Login Successful ✅");
+             return;
+            }
 
-   if(users[i].email === email && users[i].password === password){
-     alert("Login Successful ");
-     return;
-   }
+             }
 
- }
+        alert("Invalid Email or Password ❌");
 
- alert("Invalid Email or Password ");
-
-}
+       }
 
 </script>
-
 </body>
 </html>
