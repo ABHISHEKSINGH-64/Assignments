@@ -19,7 +19,7 @@
          {email:"abhi123@gmail.com", password:"1234"}
        ];
 
-        function login(){
+       function login(){
  
        let email = document.getElementById("email").value;
        let password = document.getElementById("password").value;
@@ -27,15 +27,16 @@
     for (let i=0; i<users.length; i++){
 
            if(users[i].email === email && users[i].password === password){
-           alert("Login Successful ✅");
+           alert("Login Successful ");
              return;
             }
 
              }
 
-        alert("Invalid Email or Password ❌");
+        alert("Invalid Email or Password ");
 
        }
+
 
 </script>
 </body>
