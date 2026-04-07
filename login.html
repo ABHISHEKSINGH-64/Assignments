@@ -1,43 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <input type="email" id="email" placeholder="Enter your Email">
-    <input type="password" id="password" placeholder="Enter your password">
 
-    <button onclick="login()">Login</button>
+<body class="bg-gray-100 flex justify-center items-center h-screen">
 
-    <p id="message"></p>
+<div class="bg-white p-8 rounded-xl shadow-lg w-80">
+
+    <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+
+    <input 
+        type="email" 
+        id="email" 
+        placeholder="Enter your Email"
+        class="w-full border p-2 rounded mb-4"
+    >
+
+    <input 
+        type="password" 
+        id="password" 
+        placeholder="Enter your Password"
+        class="w-full border p-2 rounded mb-4"
+    >
+
+    <button 
+        onclick="login()"
+        class="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700"
+    >
+        Login
+    </button>
+
+    <p id="message" class="text-center mt-4 text-sm"></p>
+
+</div>
 
 <script>
 
-     let users = [
-         {email:"abhi123@gmail.com", password:"1234"}
-       ];
+let users = [
+    {email:"abhi123@gmail.com", password:"1234"}
+];
 
-       function login(){
- 
-       let email = document.getElementById("email").value;
-       let password = document.getElementById("password").value;
+function login(){
+
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+    let message = document.getElementById("message");
 
     for (let i=0; i<users.length; i++){
 
-           if(users[i].email === email && users[i].password === password){
-           alert("Login Successful ");
-             return;
-            }
+        if(users[i].email === email && users[i].password === password){
+            message.innerHTML = "✅ Login Successful";
+            message.style.color = "green";
+            return;
+        }
+    }
 
-             }
-
-        alert("Invalid Email or Password ");
-
-       }
-
+    message.innerHTML = "❌ Invalid Email or Password";
+    message.style.color = "red";
+}
 
 </script>
+
 </body>
 </html>
+```
+
