@@ -59,34 +59,50 @@ Sign Up
 
 <script>
 
-let users = [
-{ name:"Abhi", email:"abhi@123.com", password:"1234" }
-];
-
 function submitForm(e){
+    e.preventDefault();
 
-e.preventDefault();
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let password = document.getElementById("password").value.trim();
+    let message = document.getElementById("message");
 
-let name = document.getElementById("name").value;
-let email = document.getElementById("email").value;
-let password = document.getElementById("password").value;
-let message = document.getElementById("message");
+    // ✅ Validation
+    if(name === "" || email === "" || password === ""){
+        message.innerText = "⚠️ All fields are required";
+        message.style.color = "orange";
+        return;
+    }
 
-for(let i=0;i<users.length;i++){
+    if(password.length < 4){
+        message.innerText = "⚠️ Password must be at least 4 characters";
+        message.style.color = "orange";
+        return;
+    }
 
-if(users[i].email === email){
-message.innerText = "User already exists";
-message.style.color = "red";
-return;
-}
+    // ✅ Get existing users
+    let users = JSON.parse(localStorage.getItem("users")) || [];
 
-}
+    // ✅ Check duplicate email
+    let userExists = users.find(user => user.email === email);
 
-users.push({name,email,password});
+    if(userExists){
+        message.innerText = "❌ User already exists";
+        message.style.color = "red";
+        return;
+    }
 
-message.innerText = "Registration successful";
-message.style.color = "green";
+    // ✅ Save new user
+    users.push({name, email, password});
+    localStorage.setItem("users", JSON.stringify(users));
 
+    message.innerText = "✅ Registration successful";
+    message.style.color = "green";
+
+    // 👉 Redirect to login
+    setTimeout(()=>{
+        window.location.href = "login.html";
+    },1000);
 }
 
 </script>
