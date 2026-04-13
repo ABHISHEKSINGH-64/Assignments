@@ -47,21 +47,35 @@ let users = [
 
 function login(){
 
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
+    let email = document.getElementById("email").value.trim();
+    let password = document.getElementById("password").value.trim();
     let message = document.getElementById("message");
 
-    for (let i=0; i<users.length; i++){
-
-        if(users[i].email === email && users[i].password === password){
-            message.innerHTML = "✅ Login Successful";
-            message.style.color = "green";
-            return;
-        }
+    // ✅ Validation
+    if(email === "" || password === ""){
+        message.innerHTML = "⚠️ Please fill all fields";
+        message.style.color = "orange";
+        return;
     }
 
-    message.innerHTML = "❌ Invalid Email or Password";
-    message.style.color = "red";
+    // ✅ Check user
+    let foundUser = users.find(user => 
+        user.email === email && user.password === password
+    );
+
+    if(foundUser){
+        message.innerHTML = "✅ Login Successful";
+        message.style.color = "green";
+
+        // 👉 Redirect after login (optional)
+        setTimeout(()=>{
+            window.location.href = "dashboard.html";
+        }, 1000);
+
+    } else {
+        message.innerHTML = "❌ Invalid Email or Password";
+        message.style.color = "red";
+    }
 }
 
 </script>
