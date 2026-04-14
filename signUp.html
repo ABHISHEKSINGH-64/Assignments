@@ -8,58 +8,76 @@
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 flex justify-center items-center h-screen">
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
 
-<div class="bg-white p-8 rounded-lg shadow-md w-96">
+<div class="bg-white p-8 rounded-xl shadow-lg w-96">
 
-<h2 class="text-2xl font-semibold text-center mb-6">
+<h2 class="text-2xl font-bold text-center mb-6 text-gray-700">
 Create Account
 </h2>
 
-<form onsubmit="submitForm(event)">
+<form id="signupForm">
 
-<label class="block mb-4 text-sm font-medium">Name</label>
+<!-- Name -->
+<label class="block text-sm font-medium mb-1">Name</label>
 <input 
 type="text" 
-id="name" 
-class="w-full border p-2 rounded mb-3"
+id="name"
+class="w-full border p-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
 placeholder="Enter your name"
-required
 >
 
-<label class="block mb-2 text-sm font-medium">Email</label>
+<!-- Email -->
+<label class="block text-sm font-medium mb-1">Email</label>
 <input 
 type="email" 
-id="email" 
-class="w-full border p-2 rounded mb-4"
+id="email"
+class="w-full border p-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
 placeholder="Enter your email"
-required
 >
 
-<label class="block mb-1 text-sm font-medium">Password</label>
+<!-- Password -->
+<label class="block text-sm font-medium mb-1">Password</label>
+<div class="relative mb-4">
 <input 
 type="password" 
-id="password" 
-class="w-full border p-2 rounded mb-4"
+id="password"
+class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
 placeholder="Enter password"
-required
 >
+<button type="button" onclick="togglePassword()" 
+class="absolute right-2 top-2 text-sm text-gray-500">
+Show
+</button>
+</div>
 
 <button 
-class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
 >
 Sign Up
 </button>
 
 </form>
 
-<p id="message" class="text-center mt-3 text-sm"></p>
+<p id="message" class="text-center mt-4 text-sm"></p>
 
 </div>
 
 <script>
 
-function submitForm(e){
+// Toggle password visibility
+function togglePassword() {
+    let password = document.getElementById("password");
+    password.type = password.type === "password" ? "text" : "password";
+}
+
+// Email validation
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// Form submit
+document.getElementById("signupForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
     let name = document.getElementById("name").value.trim();
@@ -67,42 +85,51 @@ function submitForm(e){
     let password = document.getElementById("password").value.trim();
     let message = document.getElementById("message");
 
-    // ✅ Validation
-    if(name === "" || email === "" || password === ""){
-        message.innerText = "⚠️ All fields are required";
-        message.style.color = "orange";
+    // Reset message
+    message.innerText = "";
+
+    // Validation
+    if (!name || !email || !password) {
+        showMessage("⚠️ All fields are required", "orange");
         return;
     }
 
-    if(password.length < 4){
-        message.innerText = "⚠️ Password must be at least 4 characters";
-        message.style.color = "orange";
+    if (!isValidEmail(email)) {
+        showMessage("⚠️ Invalid email format", "orange");
         return;
     }
 
-    // ✅ Get existing users
+    if (password.length < 6) {
+        showMessage("⚠️ Password must be at least 6 characters", "orange");
+        return;
+    }
+
+    // Get users
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // ✅ Check duplicate email
-    let userExists = users.find(user => user.email === email);
-
-    if(userExists){
-        message.innerText = "❌ User already exists";
-        message.style.color = "red";
+    // Check duplicate
+    if (users.some(user => user.email === email)) {
+        showMessage("❌ User already exists", "red");
         return;
     }
 
-    // ✅ Save new user
-    users.push({name, email, password});
+    // Save user
+    users.push({ name, email, password });
     localStorage.setItem("users", JSON.stringify(users));
 
-    message.innerText = "✅ Registration successful";
-    message.style.color = "green";
+    showMessage("✅ Registration successful", "green");
 
-    // 👉 Redirect to login
-    setTimeout(()=>{
+    // Redirect
+    setTimeout(() => {
         window.location.href = "login.html";
-    },1000);
+    }, 1200);
+});
+
+// Helper function
+function showMessage(text, color) {
+    let message = document.getElementById("message");
+    message.innerText = text;
+    message.style.color = color;
 }
 
 </script>
