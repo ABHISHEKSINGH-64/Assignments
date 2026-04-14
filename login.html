@@ -8,74 +8,113 @@
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 flex justify-center items-center h-screen">
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
 
 <div class="bg-white p-8 rounded-xl shadow-lg w-80">
 
-    <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+<h2 class="text-2xl font-bold text-center mb-6 text-gray-700">
+Login
+</h2>
 
-    <input 
-        type="email" 
-        id="email" 
-        placeholder="Enter your Email"
-        class="w-full border p-2 rounded mb-4"
-    >
+<form id="loginForm">
 
-    <input 
-        type="password" 
-        id="password" 
-        placeholder="Enter your Password"
-        class="w-full border p-2 rounded mb-4"
-    >
+<!-- Email -->
+<input 
+type="email" 
+id="email" 
+placeholder="Enter your Email"
+class="w-full border p-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-purple-400"
+>
 
-    <button 
-        onclick="login()"
-        class="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700"
-    >
-        Login
-    </button>
+<!-- Password -->
+<div class="relative mb-4">
+<input 
+type="password" 
+id="password" 
+placeholder="Enter your Password"
+class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-400"
+>
+<button type="button" onclick="togglePassword()" 
+class="absolute right-2 top-2 text-sm text-gray-500">
+Show
+</button>
+</div>
 
-    <p id="message" class="text-center mt-4 text-sm"></p>
+<button 
+class="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700 transition"
+>
+Login
+</button>
+
+</form>
+
+<p id="message" class="text-center mt-4 text-sm"></p>
 
 </div>
 
 <script>
 
-let users = [
-    {email:"abhi123@gmail.com", password:"1234"}
-];
+// Toggle password
+function togglePassword(){
+    let pass = document.getElementById("password");
+    pass.type = pass.type === "password" ? "text" : "password";
+}
 
-function login(){
+// Email validation
+function isValidEmail(email){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// Login
+document.getElementById("loginForm").addEventListener("submit", function(e){
+    e.preventDefault();
 
     let email = document.getElementById("email").value.trim();
     let password = document.getElementById("password").value.trim();
     let message = document.getElementById("message");
 
-    // ✅ Validation
-    if(email === "" || password === ""){
-        message.innerHTML = "⚠️ Please fill all fields";
-        message.style.color = "orange";
+    message.innerText = "";
+
+    // Validation
+    if(!email || !password){
+        showMessage("⚠️ Please fill all fields", "orange");
         return;
     }
 
-    // ✅ Check user
+    if(!isValidEmail(email)){
+        showMessage("⚠️ Invalid email format", "orange");
+        return;
+    }
+
+    // Get users from localStorage
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Find user
     let foundUser = users.find(user => 
         user.email === email && user.password === password
     );
 
     if(foundUser){
-        message.innerHTML = "✅ Login Successful";
-        message.style.color = "green";
+        showMessage("✅ Login Successful", "green");
 
-        // 👉 Redirect after login (optional)
+        // Save login session
+        localStorage.setItem("loggedInUser", JSON.stringify(foundUser));
+
+        // Redirect
         setTimeout(()=>{
             window.location.href = "dashboard.html";
-        }, 1000);
+        }, 1200);
 
     } else {
-        message.innerHTML = "❌ Invalid Email or Password";
-        message.style.color = "red";
+        showMessage("❌ Invalid Email or Password", "red");
     }
+});
+
+// Message helper
+function showMessage(text, color){
+    let message = document.getElementById("message");
+    message.innerText = text;
+    message.style.color = color;
 }
 
 </script>
